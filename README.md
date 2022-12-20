@@ -1,4 +1,5 @@
 # Kutex
+[![codecov](https://codecov.io/gh/ryan-andrew/kutex/branch/main/graph/badge.svg?token=GBP3D28FE6)](https://codecov.io/gh/ryan-andrew/kutex)
 ### A Kotlin Multiplatform object wrapper that provides safe access between coroutines
 
 Normally, we have to keep a separate locking object in order to ensure safe
