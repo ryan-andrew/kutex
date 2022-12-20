@@ -1,5 +1,9 @@
 # Kutex
-[![codecov](https://codecov.io/gh/ryan-andrew/kutex/branch/main/graph/badge.svg?token=GBP3D28FE6)](https://codecov.io/gh/ryan-andrew/kutex)
+![CI](https://github.com/ryan-andrew/kutex/actions/workflows/ci.yml/badge.svg)
+[![coverage](https://codecov.io/gh/ryan-andrew/kutex/branch/main/graph/badge.svg?token=GBP3D28FE6)](https://codecov.io/github/ryan-andrew/kutex)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ryan-andrew/kutex)
+![GitHub](https://img.shields.io/github/license/ryan-andrew/kutex)
+
 ### A Kotlin Multiplatform object wrapper that provides safe access between coroutines
 
 Normally, we have to keep a separate locking object in order to ensure safe
@@ -170,6 +174,12 @@ fun tryLockExamples() {
 ```
 
 More examples and usages can be seen in the [unit tests](src/commonTest/kotlin/dev.ryanandrew.kutex) and documentation.
+
+## Contributions
+
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ryan-andrew/kutex/issues)
+
+Feel free to contribute. Have an issue? Create a new issue in GitHub.
 
 ## FAQs
 
