@@ -64,6 +64,9 @@ kotlin {
 }
 
 kover {
+    xmlReport {
+        onCheck.set(true)
+    }
     filters {
         classes {
 //            excludes += "**Test**"
