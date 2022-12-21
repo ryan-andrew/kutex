@@ -24,6 +24,8 @@ jobs:
         run: ./gradlew build check
       - name: Dokka Html
         run: ./gradlew dokkaHtml
+      - name: Debug1
+        run: ls
 #      - name: Dokka Markdown
 #        run: ./gradlew dokkaGfm
       - name: Upload coverage to Codecov
