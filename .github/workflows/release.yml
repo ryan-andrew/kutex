@@ -14,24 +14,6 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-      - name: Build / Check / Code coverage
-        run: ./gradlew build check
-      - name: Dokka Html
-        run: ./gradlew dokkaHtml
-      - name: Debug1
-        run: ls
-#      - name: Dokka Markdown
-#        run: ./gradlew dokkaGfm
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-  deploy:
-    needs: build
     permissions:
       contents: read
       pages: write
@@ -41,20 +23,20 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      # Setup
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      # Build
+      - name: Build / Check / Code coverage
+        run: ./gradlew build check
+      # Docs
+      - name: Dokka Html
+        run: ./gradlew dokkaHtml
+      # Deploy GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v2
-      - name: Debug1
-        run: ls
-      - name: Debug2
-        run: cd build
-      - name: Debug3
-        run: ls
-      - name: Debug4
-        run: cd dokka
-      - name: Debug5
-        run: ls
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1.0.7
         with:
@@ -62,3 +44,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1.2.3
+      # Code coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
