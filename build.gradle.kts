@@ -2,16 +2,14 @@ plugins {
     kotlin("multiplatform") version "1.7.21"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
     id("org.jetbrains.dokka") version "1.7.20"
-    jacoco
 }
 
 group = "dev.ryanandrew"
-version = "1.0.0-SNAPSHOT"
+version = "1.00"
 
 repositories {
     mavenCentral()
 }
-
 
 kotlin {
     jvm {
@@ -73,4 +71,40 @@ kover {
 //            excludes += "**Test**"
         }
     }
+}
+
+// Dokka versioning
+
+buildscript {
+    dependencies {
+        classpath("org.jetbrains.dokka:versioning-plugin:1.7.20")
+    }
+}
+
+dependencies {
+    dokkaPlugin("org.jetbrains.dokka:versioning-plugin:1.7.20")
+}
+
+tasks.dokkaHtml.configure {
+    val dokkaDir = buildDir.resolve("dokka")
+    val projectVersion = project.version.toString()
+    val old = buildDir.resolve("dokka-old")
+    dokkaDir.listFiles()?.firstOrNull()?.apply {
+        copy {
+            from(path)
+            into(old.resolve(name))
+        }
+        resolve("older").listFiles()?.forEach {
+            copy {
+                from(it.path)
+                into(old.resolve(it.name))
+            }
+        }
+    }
+    pluginConfiguration<org.jetbrains.dokka.versioning.VersioningPlugin, org.jetbrains.dokka.versioning.VersioningConfiguration> {
+        version = projectVersion
+        olderVersionsDir = old
+        renderVersionsNavigationOnAllPages = true
+    }
+    outputDirectory.set(dokkaDir.resolve(projectVersion))
 }
