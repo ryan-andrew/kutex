@@ -30,22 +30,25 @@ jobs:
       # Build
       - name: Build / Check / Code coverage
         run: ./gradlew build check
-      # Docs
-      - name: Dokka Html
-        run: ./gradlew dokkaHtml
-      # Deploy GitHub Pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1.0.7
-        with:
-          path: './build/dokka/html/'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1.2.3
-      # Code coverage
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+#      # Docs
+#      - name: Dokka Html
+#        run: ./gradlew dokkaHtml
+#      # Deploy GitHub Pages
+#      - name: Setup Pages
+#        uses: actions/configure-pages@v2
+#      - name: Upload artifact
+#        uses: actions/upload-pages-artifact@v1.0.7
+#        with:
+#          path: './build/dokka/html/'
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v1.2.3
+#      # Code coverage
+#      - name: Upload coverage to Codecov
+#        uses: codecov/codecov-action@v3
       # Publish
       - name: Publish
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          TOKEN: ${{ secrets.TOKEN }}
         run: ./gradlew publish
