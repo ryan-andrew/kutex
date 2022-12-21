@@ -34,9 +34,25 @@ jobs:
       # Docs
       - name: Dokka Html
         run: ./gradlew dokkaHtml
+
+      - name: Debug1
+        run: ls
+      - name: Debug2
+        run: ls build
+      - name: Debug4
+        run: ls build/dokka
+
       # Deploy GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v2
+
+      - name: Debug5
+        run: ls
+      - name: Debug6
+        run: ls build
+      - name: Debug7
+        run: ls build/dokka
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1.0.7
         with:
