@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.7.21"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
     id("org.jetbrains.dokka") version "1.7.20"
+    id("maven-publish")
 }
 
 group = "dev.ryanandrew"
@@ -73,6 +74,24 @@ kover {
     }
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ryan-andrew/kutex")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            from(components["java"])
+        }
+    }
+}
+
 // Dokka versioning
 
 buildscript {
@@ -86,7 +105,7 @@ dependencies {
 }
 
 tasks.dokkaHtml.configure {
-    val dokkaDir = buildDir.resolve("dokka")
+    val dokkaDir = buildDir.resolve("dokka").resolve("html")
     val projectVersion = project.version.toString()
     val old = buildDir.resolve("dokka-old")
     dokkaDir.listFiles()?.firstOrNull()?.apply {

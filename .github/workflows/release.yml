@@ -2,14 +2,13 @@ name: Release
 on:
   push:
     branches:
-      - 'releases/**'
       - 'release-test/**'
-#on:
-#  release:
-#    types: [published]
+#      - 'main'
+#    tags:
+#      - 'v**'
 
 concurrency:
-  group: "pages"
+  group: "release"
   cancel-in-progress: true
 
 jobs:
@@ -34,25 +33,9 @@ jobs:
       # Docs
       - name: Dokka Html
         run: ./gradlew dokkaHtml
-
-      - name: Debug1
-        run: ls
-      - name: Debug2
-        run: ls build
-      - name: Debug4
-        run: ls build/dokka
-
       # Deploy GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v2
-
-      - name: Debug5
-        run: ls
-      - name: Debug6
-        run: ls build
-      - name: Debug7
-        run: ls build/dokka
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1.0.7
         with:
@@ -63,3 +46,6 @@ jobs:
       # Code coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+      # Publish
+      - name: Publish
+        run: ./gradlew publish
