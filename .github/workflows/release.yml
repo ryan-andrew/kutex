@@ -1,0 +1,52 @@
+name: Release
+on:
+  push:
+    branches:
+      - 'releases/**'
+      - 'release-test/**'
+#on:
+#  release:
+#    types: [published]
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Build / Check / Code coverage
+        run: ./gradlew build check
+      - name: Dokka Html
+        run: ./gradlew dokkaHtml
+#      - name: Dokka Markdown
+#        run: ./gradlew dokkaGfm
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+  deploy:
+    needs: build
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1.0.7
+        with:
+          path: '~/build/dokka/html'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1.2.3

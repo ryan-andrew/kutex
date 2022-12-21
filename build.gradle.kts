@@ -1,11 +1,12 @@
 plugins {
     kotlin("multiplatform") version "1.7.21"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("org.jetbrains.dokka") version "1.7.20"
     jacoco
 }
 
 group = "dev.ryanandrew"
-version = "1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()

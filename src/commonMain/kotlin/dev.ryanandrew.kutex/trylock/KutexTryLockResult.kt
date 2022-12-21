@@ -18,6 +18,12 @@ package dev.ryanandrew.kutex.trylock
  */
 class KutexTryLockResult<T> @PublishedApi internal constructor(
     @PublishedApi internal val value: T?,
+    /**
+     * Returns `true` if the kutex successfully acquired the lock.
+     * In this case [wasAlreadyLocked] returns `false`.
+     *
+     * When this is `false`, [onAlreadyLocked] blocks will be executed.
+     */
     val successfullyLocked: Boolean
 ) {
 
@@ -45,7 +51,8 @@ class KutexTryLockResult<T> @PublishedApi internal constructor(
 
     override fun toString(): String = "KutexTryLockResult(isSuccess=$successfullyLocked, value=$value)"
 
-    companion object {
+    @PublishedApi
+    internal companion object {
         /**
          * Instantiates a new [KutexTryLockResult] for when a Kutex was unlocked, the lock was acquired, and
          * the value of the Kutex is available.
