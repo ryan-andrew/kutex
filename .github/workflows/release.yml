@@ -44,7 +44,8 @@ jobs:
 #      # Docs
 #      - name: Dokka Html
 #        run: ./gradlew dokkaHtml
-      - name: Push Documentation
+
+#      - name: Push Documentation
       - uses: actions/checkout@v3
       - run: |
           git checkout docs
@@ -53,7 +54,7 @@ jobs:
           echo "::set-output name=VERSION_NAME::$(./gradlew -q printVersion)"
           git add ./build/dokka/*
           git commit -m "Test\n\nThis is a test commit"
-          git push origin docs
+          git push origin/docs
 #      # Deploy GitHub Pages
 #      - name: Setup Pages
 #        uses: actions/configure-pages@v2
