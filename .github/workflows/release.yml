@@ -48,6 +48,8 @@ jobs:
 #      - name: Push Documentation
       - uses: actions/checkout@v3
       - run: |
+          git fetch
+          git branch -r
           git checkout origin/docs
           git rebase main
           ./gradlew dokkaHtml
