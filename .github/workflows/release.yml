@@ -46,12 +46,12 @@ jobs:
 #        run: ./gradlew dokkaHtml
       - name: Push Documentation
         run: |
-          - git checkout docs
-          - git rebase main
-          - ./gradlew dokkaHtml
-          - echo "::set-output name=VERSION_NAME::$(./gradlew -q printVersion)"
-          - git commit -m "Test\n\nThis is a test commit"
-          - git push origin docs
+          git checkout docs
+          git rebase main
+          ./gradlew dokkaHtml
+          echo "::set-output name=VERSION_NAME::$(./gradlew -q printVersion)"
+          git commit -m "Test\n\nThis is a test commit"
+          git push origin docs
 #      # Deploy GitHub Pages
 #      - name: Setup Pages
 #        uses: actions/configure-pages@v2
