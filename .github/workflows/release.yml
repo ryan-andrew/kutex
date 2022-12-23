@@ -50,7 +50,7 @@ jobs:
           git fetch
           git branch -r
           git checkout origin/docs
-          git rebase origin/main
+          git rebase origin/release-test/1
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
@@ -62,7 +62,7 @@ jobs:
 
       - name: Commit Docs
         run: |
-          git add ./build/dokka/*
+          git add ./build/dokka/
           git commit -m "Test\n\nThis is a test commit"
           git push origin/docs
 #      # Deploy GitHub Pages
