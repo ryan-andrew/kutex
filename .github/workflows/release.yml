@@ -48,7 +48,7 @@ jobs:
 #      - name: Push Documentation
       - uses: actions/checkout@v3
       - run: |
-          git checkout docs
+          git checkout origin/docs
           git rebase main
           ./gradlew dokkaHtml
           echo "::set-output name=VERSION_NAME::$(./gradlew -q printVersion)"
