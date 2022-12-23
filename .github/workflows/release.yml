@@ -52,6 +52,7 @@ jobs:
           git branch -r
           git checkout origin/docs
           git rebase origin/main
+          ./gradlew build check
           ./gradlew dokkaHtml
           echo "::set-output name=VERSION_NAME::$(./gradlew -q printVersion)"
           git add ./build/dokka/*
