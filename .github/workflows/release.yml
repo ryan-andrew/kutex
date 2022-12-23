@@ -22,11 +22,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-#      # Setup
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#      - name: Setup Gradle
-#        uses: gradle/gradle-build-action@v2
+      # Setup
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 #      # Build
 #      - name: Build / Check / Code coverage
 #        run: ./gradlew build check
@@ -45,19 +45,18 @@ jobs:
 #      - name: Dokka Html
 #        run: ./gradlew dokkaHtml
 
-#      - name: Push Documentation
-      - uses: actions/checkout@v3
-      - run: |
+      - name: Checkout Docs
+        run: |
           git fetch
           git branch -r
           git checkout origin/docs
           git rebase origin/main
 
-      - uses: gradle/gradle-build-action@v2
-      - with:
-        arguments: dokkaHtml
+      - name: Dokka Html
+        run: ./gradlew dokkaHtml
 
-      - run: |
+      - name: Commit Docs
+        run: |
           git add ./build/dokka/*
           git commit -m "Test\n\nThis is a test commit"
           git push origin/docs
