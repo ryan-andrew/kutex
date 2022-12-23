@@ -45,7 +45,7 @@ jobs:
 #      - name: Dokka Html
 #        run: ./gradlew dokkaHtml
       - name: Push Documentation
-        run: |
+      - run: |
           git checkout docs
           git rebase main
           ./gradlew dokkaHtml
