@@ -25,8 +25,8 @@ jobs:
       # Setup
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+#      - name: Setup Gradle
+#        uses: gradle/gradle-build-action@v2
 #      # Build
 #      - name: Build / Check / Code coverage
 #        run: ./gradlew build check
@@ -51,6 +51,9 @@ jobs:
           git branch -r
           git checkout origin/docs
           git rebase origin/main
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
       - name: Dokka Html
         run: ./gradlew dokkaHtml
