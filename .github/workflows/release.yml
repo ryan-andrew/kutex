@@ -56,7 +56,9 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Dokka Html
-        run: ./gradlew dokkaHtml
+        run: |
+          ./gradlew tasks
+          cat ./build.gradle.kts
 
       - name: Commit Docs
         run: |
