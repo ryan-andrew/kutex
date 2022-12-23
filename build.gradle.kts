@@ -8,6 +8,8 @@ plugins {
 group = "dev.ryanandrew"
 version = "1.0.0"
 
+tasks.register("printVersion"){ println(version) }
+
 repositories {
     mavenCentral()
 }

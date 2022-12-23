@@ -22,17 +22,36 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      # Setup
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-      # Build
-      - name: Build / Check / Code coverage
-        run: ./gradlew build check
+#      # Setup
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#      - name: Setup Gradle
+#        uses: gradle/gradle-build-action@v2
+#      # Build
+#      - name: Build / Check / Code coverage
+#        run: ./gradlew build check
+
+
+#      # Code coverage
+#      - name: Upload coverage to Codecov
+#        uses: codecov/codecov-action@v3
+#      # Publish
+#      - name: Publish
+#        env:
+#          USERNAME: ${{ secrets.USERNAME }}
+#          TOKEN: ${{ secrets.TOKEN }}
+#        run: ./gradlew publish
 #      # Docs
 #      - name: Dokka Html
 #        run: ./gradlew dokkaHtml
+      - name: Push Documentation
+        run: |
+          - git checkout docs
+          - git rebase main
+          - ./gradlew dokkaHtml
+          - echo "::set-output name=VERSION_NAME::$(./gradlew -q printVersion)"
+          - git commit -m "Test\n\nThis is a test commit"
+          - git push origin docs
 #      # Deploy GitHub Pages
 #      - name: Setup Pages
 #        uses: actions/configure-pages@v2
@@ -43,12 +62,3 @@ jobs:
 #      - name: Deploy to GitHub Pages
 #        id: deployment
 #        uses: actions/deploy-pages@v1.2.3
-#      # Code coverage
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v3
-      # Publish
-      - name: Publish
-        env:
-          USERNAME: ${{ secrets.USERNAME }}
-          TOKEN: ${{ secrets.TOKEN }}
-        run: ./gradlew publish
