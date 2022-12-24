@@ -50,7 +50,7 @@ jobs:
           git fetch
           git checkout origin/docs
           ./gradlew copyFromDocsToTmp
-          git checkout origin/release-test/1
+          git checkout -b origin/release-test/1
           ./gradlew dokkaHtml
 
       - name: Commit Docs
