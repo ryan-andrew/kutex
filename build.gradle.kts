@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.ryanandrew"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -106,7 +106,6 @@ dependencies {
 
 val dokkaDir = buildDir.resolve("dokka").resolve("html")
 val tmpDocDir = projectDir.resolve("docs_tmp")
-val projectVersion = project.version.toString()
 
 tasks.register("printVersion"){
     println(version)
@@ -125,6 +124,8 @@ tasks.register("copyFromDocsToTmp"){
 }
 
 tasks.dokkaHtml.configure {
+    val projectVersion = project.version.toString()
+    println("!!!!!Project version: $projectVersion")
 //    val projectVersion = project.version.toString()
 //    val old = buildDir.resolve("dokka-old")
 //    dokkaDir.listFiles()?.firstOrNull()?.apply {
