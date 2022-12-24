@@ -55,7 +55,7 @@ jobs:
 
       - name: Commit Docs
         run: |
-          git add ./build/dokka/html
+          git add ./build/dokka/html -f
           git commit -m "Test\n\nThis is a test commit"
           git push origin/docs
 #      # Deploy GitHub Pages
