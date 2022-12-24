@@ -126,6 +126,7 @@ tasks.register("copyFromDocsToTmp"){
 tasks.dokkaHtml.configure {
     val projectVersion = project.version.toString()
     println("!!!!!Project version: $projectVersion")
+    throw IllegalArgumentException("!!!!!Project version: $projectVersion")
 //    val projectVersion = project.version.toString()
 //    val old = buildDir.resolve("dokka-old")
 //    dokkaDir.listFiles()?.firstOrNull()?.apply {
