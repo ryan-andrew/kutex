@@ -8,8 +8,6 @@ plugins {
 group = "dev.ryanandrew"
 version = "1.0.0"
 
-tasks.register("printVersion"){ println(version) }
-
 repositories {
     mavenCentral()
 }
@@ -106,25 +104,44 @@ dependencies {
     dokkaPlugin("org.jetbrains.dokka:versioning-plugin:1.7.20")
 }
 
-tasks.dokkaHtml.configure {
-    val dokkaDir = buildDir.resolve("dokka").resolve("html")
-    val projectVersion = project.version.toString()
-    val old = buildDir.resolve("dokka-old")
-    dokkaDir.listFiles()?.firstOrNull()?.apply {
+val dokkaDir = buildDir.resolve("dokka").resolve("html")
+val tmpDocDir = projectDir.resolve("docs_tmp")
+val projectVersion = project.version.toString()
+
+tasks.register("printVersion"){
+    println(version)
+}
+
+tasks.register("copyFromDocsToTmp"){
+    if (dokkaDir.exists()) {
         copy {
-            from(path)
-            into(old.resolve(name))
+            from(dokkaDir)
+            into(tmpDocDir)
         }
-        resolve("older").listFiles()?.forEach {
-            copy {
-                from(it.path)
-                into(old.resolve(it.name))
-            }
-        }
+        println("${dokkaDir.path} copied to ${tmpDocDir.path}")
+    } else {
+        println("${dokkaDir.path} did not exist!")
     }
+}
+
+tasks.dokkaHtml.configure {
+//    val projectVersion = project.version.toString()
+//    val old = buildDir.resolve("dokka-old")
+//    dokkaDir.listFiles()?.firstOrNull()?.apply {
+//        copy {
+//            from(path)
+//            into(old.resolve(name))
+//        }
+//        resolve("older").listFiles()?.forEach {
+//            copy {
+//                from(it.path)
+//                into(old.resolve(it.name))
+//            }
+//        }
+//    }
     pluginConfiguration<org.jetbrains.dokka.versioning.VersioningPlugin, org.jetbrains.dokka.versioning.VersioningConfiguration> {
         version = projectVersion
-        olderVersionsDir = old
+        olderVersionsDir = tmpDocDir
         renderVersionsNavigationOnAllPages = true
     }
     outputDirectory.set(dokkaDir.resolve(projectVersion))
