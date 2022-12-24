@@ -59,7 +59,7 @@ jobs:
           git config --global user.email "ryan@ryanandrew.dev"
           git config --global user.name "Ryan"
           git commit -m "Test\n\nThis is a test commit"
-          git push origin/docs
+          git push origin docs
 #      # Deploy GitHub Pages
 #      - name: Setup Pages
 #        uses: actions/configure-pages@v2
