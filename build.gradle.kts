@@ -118,7 +118,7 @@ tasks.register("copyFromDocsToTmp"){
         dokkaDir.listFiles()?.firstOrNull()?.let {
             println("First dokka folder: ${it.path}")
             copy {
-                from(it)
+                from(it.path)
                 into(tmpDocDir)
             }
             println("${it.path} copied to ${tmpDocDir.path}")
@@ -128,7 +128,7 @@ tasks.register("copyFromDocsToTmp"){
                 println("older exists")
                 old.listFiles()?.forEach {
                     copy {
-                        from(it)
+                        from(it.path)
                         into(tmpDocDir)
                     }
                 }
