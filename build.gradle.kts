@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.ryanandrew"
-version = "0.0.4"
+version = "0.0.5"
 
 repositories {
     mavenCentral()
@@ -108,22 +108,21 @@ tasks.register("printVersion"){
 
 tasks.register("copyFromDocsToTmp"){
     if (dokkaDir.exists()) {
-        dokkaDir.listFiles()?.firstOrNull()?.let {
-            copy {
-                from(it.parent)
-                into(tmpDocDir)
-            }
-            println("${it.path} copied to ${tmpDocDir.path}")
+        val prevVersion = (groovy.json.JsonSlurper().parse(dokkaDir.resolve("version.json")) as Map<*, *>)["version"]
+        val prevDir = tmpDocDir.resolve(prevVersion.toString())
 
-            val old = it.resolve("older")
-            if (old.exists()) {
-                println("older exists")
-                old.listFiles()?.forEach {
-                    copy {
-                        from(it.parent)
-                        into(tmpDocDir)
-                    }
-                }
+        copy {
+            from(dokkaDir)
+            into(prevDir)
+        }
+        println("${dokkaDir.path} copied to ${tmpDocDir.path}")
+
+        val old = dokkaDir.resolve("older")
+        if (old.exists()) {
+            println("older exists")
+            copy {
+                from(old)
+                into(tmpDocDir)
             }
         }
     } else {
