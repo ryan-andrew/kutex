@@ -143,7 +143,8 @@ tasks.dokkaHtml.configure {
 //    }
     pluginConfiguration<org.jetbrains.dokka.versioning.VersioningPlugin, org.jetbrains.dokka.versioning.VersioningConfiguration> {
         version = projectVersion
-        olderVersionsDir = tmpDocDir
+        olderVersionsDir = throw IllegalArgumentException("!!!!!! Project version: $projectVersion")
+//        olderVersionsDir = tmpDocDir
         renderVersionsNavigationOnAllPages = true
     }
     outputDirectory.set(dokkaDir.resolve(projectVersion))
