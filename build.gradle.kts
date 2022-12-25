@@ -138,7 +138,7 @@ tasks.dokkaHtml.configure {
 //                into(old.resolve(it.name))
 //            }
 //        }
-//    }
+//    }//
     tmpDocDir.listFiles()?.forEach { println("~~~~~~~${it.name}") }
     tmpDocDir.listFiles()?.filter { it.name == projectVersion }?.forEach { delete(it) }
     tmpDocDir.listFiles()?.forEach { println("~~~~~~~${it.name}") }
