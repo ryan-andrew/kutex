@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Setup
-      - name: Checkout
+      - name: Setup Checkout
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.PUSHER_TOKEN }}
