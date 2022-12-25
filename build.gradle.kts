@@ -139,6 +139,7 @@ tasks.dokkaHtml.configure {
 //            }
 //        }
 //    }
+    tmpDocDir.listFiles()?.forEach { println("~~~~~~~${it.name}") }
     tmpDocDir.listFiles()?.filter { it.name == projectVersion }?.forEach { it.delete() }
     pluginConfiguration<org.jetbrains.dokka.versioning.VersioningPlugin, org.jetbrains.dokka.versioning.VersioningConfiguration> {
         version = projectVersion
