@@ -59,7 +59,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git commit -m "Test\n\nThis is a test commit"
-          git push origin release-test/1:docs
+          git push origin release-test/1:docs -f
 #      # Deploy GitHub Pages
 #      - name: Setup Pages
 #        uses: actions/configure-pages@v2
