@@ -47,18 +47,10 @@ jobs:
 
       - name: Checkout Docs
         run: |
-          echo "!!!!!"
-          ./gradlew printVersion
-          echo "-----"
-          git branch
           git fetch
           git checkout origin/docs
           ./gradlew copyFromDocsToTmp
           git checkout release-test/1
-          echo "!!!!!!"
-          ./gradlew printVersion
-          echo "-----"
-          git branch
           ./gradlew dokkaHtml
 
       - name: Commit Docs

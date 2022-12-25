@@ -125,8 +125,6 @@ tasks.register("copyFromDocsToTmp"){
 
 tasks.dokkaHtml.configure {
     val projectVersion = project.version.toString()
-    println("!!!!!Project version: $projectVersion")
-    throw IllegalArgumentException("!!!!!! Project version: $projectVersion")
 //    val projectVersion = project.version.toString()
 //    val old = buildDir.resolve("dokka-old")
 //    dokkaDir.listFiles()?.firstOrNull()?.apply {
@@ -143,8 +141,7 @@ tasks.dokkaHtml.configure {
 //    }
     pluginConfiguration<org.jetbrains.dokka.versioning.VersioningPlugin, org.jetbrains.dokka.versioning.VersioningConfiguration> {
         version = projectVersion
-        olderVersionsDir = throw IllegalArgumentException("!!!!!! Project version: $projectVersion")
-//        olderVersionsDir = tmpDocDir
+        olderVersionsDir = tmpDocDir
         renderVersionsNavigationOnAllPages = true
     }
     outputDirectory.set(dokkaDir.resolve(projectVersion))
