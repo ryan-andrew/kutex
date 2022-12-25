@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.ryanandrew"
-version = "1.0.12"
+version = "1.0.13"
 
 repositories {
     mavenCentral()
@@ -118,7 +118,7 @@ tasks.register("copyFromDocsToTmp"){
         dokkaDir.listFiles()?.firstOrNull()?.let {
             println("First dokka folder: ${it.path}")
             copy {
-                from(it.path)
+                from(it.parent)
                 into(tmpDocDir)
             }
             println("${it.path} copied to ${tmpDocDir.path}")
@@ -128,7 +128,7 @@ tasks.register("copyFromDocsToTmp"){
                 println("older exists")
                 old.listFiles()?.forEach {
                     copy {
-                        from(it.path)
+                        from(it.parent)
                         into(tmpDocDir)
                     }
                 }
