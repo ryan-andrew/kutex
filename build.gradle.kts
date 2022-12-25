@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.ryanandrew"
-version = "1.0.9"
+version = "1.0.10"
 
 repositories {
     mavenCentral()
@@ -113,7 +113,9 @@ tasks.register("printVersion"){
 
 tasks.register("copyFromDocsToTmp"){
     if (dokkaDir.exists()) {
+        println("dokka dir existed")
         dokkaDir.listFiles()?.firstOrNull()?.let {
+            println("First dokka folder: ${it.path}")
             copy {
                 from(it)
                 into(tmpDocDir)
@@ -122,6 +124,7 @@ tasks.register("copyFromDocsToTmp"){
 
             val old = it.resolve("older")
             if (old.exists()) {
+                println("older exists")
                 old.listFiles()?.forEach {
                     copy {
                         from(it)
