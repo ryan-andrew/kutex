@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.ryanandrew"
-version = "1.0.10"
+version = "1.0.11"
 
 repositories {
     mavenCentral()
@@ -112,6 +112,7 @@ tasks.register("printVersion"){
 }
 
 tasks.register("copyFromDocsToTmp"){
+    println("!!!!!!!!!!!!!!!!!!!")
     if (dokkaDir.exists()) {
         println("dokka dir existed")
         dokkaDir.listFiles()?.firstOrNull()?.let {
