@@ -50,6 +50,7 @@ jobs:
           echo "!!!!!"
           ./gradlew printVersion
           echo "-----"
+          git branch
           git fetch
           git checkout origin/docs
           ./gradlew copyFromDocsToTmp
@@ -57,6 +58,7 @@ jobs:
           echo "!!!!!"
           ./gradlew printVersion
           echo "-----"
+          git branch
           ./gradlew dokkaHtml
 
       - name: Commit Docs
