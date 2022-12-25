@@ -118,6 +118,15 @@ tasks.register("copyFromDocsToTmp"){
             into(tmpDocDir)
         }
         println("${dokkaDir.path} copied to ${tmpDocDir.path}")
+        val old = dokkaDir.resolve("older")
+        if (old.exists()) {
+            old.listFiles()?.forEach {
+                copy {
+                    from(it)
+                    into(tmpDocDir)
+                }
+            }
+        }
     } else {
         println("${dokkaDir.path} did not exist!")
     }
@@ -125,6 +134,7 @@ tasks.register("copyFromDocsToTmp"){
 
 tasks.dokkaHtml.configure {
     val projectVersion = project.version.toString()
+    // TODO still loses version before last AND loses all old versions if curr version is same as last during build
 //    val projectVersion = project.version.toString()
 //    val old = buildDir.resolve("dokka-old")
 //    dokkaDir.listFiles()?.firstOrNull()?.apply {
