@@ -54,7 +54,7 @@ jobs:
           git fetch
           git checkout origin/docs
           ./gradlew copyFromDocsToTmp
-          git checkout -b origin/release-test/1
+          git checkout release-test/1
           echo "!!!!!"
           ./gradlew printVersion
           echo "-----"
