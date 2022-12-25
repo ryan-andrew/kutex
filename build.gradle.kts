@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.ryanandrew"
-version = "1.0.15"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
@@ -67,11 +67,6 @@ kover {
     xmlReport {
         onCheck.set(true)
     }
-    filters {
-        classes {
-//            excludes += "**Test**"
-        }
-    }
 }
 
 publishing {
@@ -112,11 +107,8 @@ tasks.register("printVersion"){
 }
 
 tasks.register("copyFromDocsToTmp"){
-    println("!!!!!!!!!!!!!!!!!!!")
     if (dokkaDir.exists()) {
-        println("dokka dir existed")
         dokkaDir.listFiles()?.firstOrNull()?.let {
-            println("First dokka folder: ${it.path}")
             copy {
                 from(it.parent)
                 into(tmpDocDir)
@@ -141,28 +133,11 @@ tasks.register("copyFromDocsToTmp"){
 
 tasks.dokkaHtml.configure {
     val projectVersion = project.version.toString()
-    // TODO still loses version before last AND loses all old versions if curr version is same as last during build
-//    val projectVersion = project.version.toString()
-//    val old = buildDir.resolve("dokka-old")
-//    dokkaDir.listFiles()?.firstOrNull()?.apply {
-//        copy {
-//            from(path)
-//            into(old.resolve(name))
-//        }
-//        resolve("older").listFiles()?.forEach {
-//            copy {
-//                from(it.path)
-//                into(old.resolve(it.name))
-//            }
-//        }
-//    }//
-    tmpDocDir.listFiles()?.forEach { println("~~~~~~~${it.name}") }
     tmpDocDir.listFiles()?.filter { it.name == projectVersion }?.forEach { delete(it) }
-    tmpDocDir.listFiles()?.forEach { println("~~~~~~~${it.name}") }
     pluginConfiguration<org.jetbrains.dokka.versioning.VersioningPlugin, org.jetbrains.dokka.versioning.VersioningConfiguration> {
         version = projectVersion
         olderVersionsDir = tmpDocDir
         renderVersionsNavigationOnAllPages = true
     }
-    outputDirectory.set(dokkaDir.resolve(projectVersion))
+    outputDirectory.set(dokkaDir)
 }
