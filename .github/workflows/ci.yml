@@ -1,9 +1,7 @@
 name: Build / Check PR
 on:
-  pull_request_target:
+  pull_request:
     types: [assigned, opened, synchronize, reopened]
-    branches:
-      - '**'
 jobs:
   run:
     runs-on: ubuntu-latest
