@@ -93,8 +93,9 @@ tasks.register("printVersion"){
 }
 
 tasks.register("copyFromDocsToTmp"){
-    if (dokkaDir.exists()) {
-        val prevVersion = (groovy.json.JsonSlurper().parse(dokkaDir.resolve("version.json")) as Map<*, *>)["version"]
+    val versionFile = dokkaDir.resolve("version.json")
+    if (dokkaDir.exists() && versionFile.exists()) {
+        val prevVersion = (groovy.json.JsonSlurper().parse(versionFile) as Map<*, *>)["version"]
         val prevDir = tmpDocDir.resolve(prevVersion.toString())
 
         copy {
@@ -134,7 +135,7 @@ val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
 }
 
-fun getExtraString(name: String) = ext[name]?.toString()
+fun getExtraString(name: String) = try { ext[name]?.toString() } catch (t: Throwable) { null }
 
 publishing {
     repositories {

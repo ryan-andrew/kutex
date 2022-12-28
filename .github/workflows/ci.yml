@@ -1,7 +1,8 @@
 name: Build / Check PR
 on:
-  pull_request:
-    - synchronize
+  pull_request_target:
+    types:
+      - synchronize
 jobs:
   run:
     runs-on: ubuntu-latest
