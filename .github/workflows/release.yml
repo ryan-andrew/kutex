@@ -2,10 +2,9 @@ name: Release
 on:
   push:
     branches:
-      - 'release-test/**'
-#      - 'main'
-#    tags:
-#      - 'v**'
+      - 'main'
+    tags:
+      - 'v**'
 
 concurrency:
   group: "release"
@@ -26,24 +25,30 @@ jobs:
           token: ${{ secrets.PUSHER_TOKEN }}
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-#      # Build
-#      - name: Build / Check / Code coverage
-#        run: ./gradlew build check
 
+      # Build / Check / Coverage
+      - name: Build / Check / Code coverage
+        run: ./gradlew build check
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
-#      # Code coverage
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v3
-#      # Publish
-#      - name: Publish
-#        env:
-#          USERNAME: ${{ secrets.USERNAME }}
-#          TOKEN: ${{ secrets.TOKEN }}
-#        run: ./gradlew publish
-#      # Docs
-#      - name: Dokka Html
-#        run: ./gradlew dokkaHtml
+      # Publish
+      - name: Fill gradle.properties
+        run: |
+          echo "signing.keyId=${{ secrets.SIGNING_KEY_ID }}" > ./gradle.properties
+          echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" > ./gradle.properties
+          echo "ossrhUsername=${{ secrets.SONATYPE_PASSWORD }}" > ./gradle.properties
+          echo "ossrhPassword=${{ secrets.SONATYPE_USERNAME }}" > ./gradle.properties
+      - name: Grab secring
+        run: |
+          echo -n "${{ secrets.SECRING_GPG_B64 }}" | base64 --decode > ./secring.gpg
+      - name: Publish
+        env:
+          USERNAME: 'ryan-andrew'
+          TOKEN: ${{ secrets.PUSH_TOKEN }}
+        run: ./gradlew publish
 
+      # Docs
       - name: Checkout Docs
         run: |
           git fetch
@@ -51,7 +56,6 @@ jobs:
           ./gradlew copyFromDocsToTmp
           git checkout release-test/1
           ./gradlew dokkaHtml
-
       - name: Commit Docs
         run: |
           git add ./build/dokka/html -f
@@ -59,13 +63,3 @@ jobs:
           git config user.email github-actions@github.com
           git commit -m "Update documentation for $(./gradlew -q printVersion)"
           git push origin release-test/1:docs -f
-#      # Deploy GitHub Pages
-#      - name: Setup Pages
-#        uses: actions/configure-pages@v2
-#      - name: Upload artifact
-#        uses: actions/upload-pages-artifact@v1.0.7
-#        with:
-#          path: './build/dokka/html/'
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v1.2.3

@@ -1,14 +1,16 @@
-#name: CI
-#on: [push, pull_request]
-#jobs:
-#  run:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Setup Gradle
-#        uses: gradle/gradle-build-action@v2
-#      - name: Build / Check / Code coverage
-#        run: ./gradlew build check
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v3
+name: Build / Check PR
+on:
+  pull_request:
+    synchronize
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Build / Check / Code coverage
+        run: ./gradlew build check
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3

@@ -2,14 +2,16 @@ plugins {
     kotlin("multiplatform") version "1.7.21"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
     id("org.jetbrains.dokka") version "1.7.20"
-    id("maven-publish")
+    `maven-publish`
+    signing
 }
 
 group = "dev.ryanandrew"
-version = "0.0.6"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 kotlin {
@@ -63,27 +65,11 @@ kotlin {
     }
 }
 
+// Documentation
+
 kover {
     xmlReport {
         onCheck.set(true)
-    }
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/ryan-andrew/kutex")
-            credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
-            }
-        }
-    }
-    publications {
-        register<MavenPublication>("gpr") {
-            from(components["java"])
-        }
     }
 }
 
@@ -139,4 +125,68 @@ tasks.dokkaHtml.configure {
         renderVersionsNavigationOnAllPages = true
     }
     outputDirectory.set(dokkaDir)
+}
+
+// Publishing
+// Stub secrets to let the project sync and build without the publication values set up
+
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
+fun getExtraString(name: String) = ext[name]?.toString()
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ryan-andrew/kutex")
+            credentials {
+                username = "ryan-andrew"
+                password = System.getenv("PUSH_TOKEN")
+            }
+        }
+        maven {
+            name = "sonatype"
+            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = getExtraString("ossrhUsername")
+                password = getExtraString("ossrhPassword")
+            }
+        }
+    }
+
+    // Configure all publications
+    publications.withType<MavenPublication> {
+        // Stub javadoc.jar artifact
+        artifact(javadocJar.get())
+
+        // Provide artifacts information requited by Maven Central
+        pom {
+            name.set("Kutex")
+            description.set("A Kotlin Multiplatform object wrapper that provides safe access between coroutines")
+            url.set("https://github.com/reyan-andrew/kutex")
+            licenses {
+                license {
+                    name.set("MIT")
+                    url.set("https://opensource.org/licenses/MIT")
+                }
+            }
+            developers {
+                developer {
+                    id.set("ryan-andrew")
+                    name.set("Ryan")
+                    email.set("ryan@ryanandrew.dev")
+                }
+            }
+            scm {
+                url.set("https://github.com/reyan-andrew/kutex")
+            }
+        }
+    }
+}
+
+// Signing artifacts. Signing.* extra properties values will be used
+signing {
+    sign(publishing.publications)
 }
