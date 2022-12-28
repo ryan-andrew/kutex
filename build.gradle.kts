@@ -93,6 +93,13 @@ tasks.register("printVersion"){
 }
 
 tasks.register("copyFromDocsToTmp"){
+    val gradFile = projectDir.resolve("gradle.properties").readLines().joinToString("\n")
+    println("!!!!!!!!!!!!!")
+    println(gradFile)
+    println(gradFile[gradFile.lastIndex-3])
+    println("-------------")
+    projectDir.resolve("gradle.properties").readLines().forEach { it.forEach { println(it) } }
+    println("_____________")
     val versionFile = dokkaDir.resolve("version.json")
     if (dokkaDir.exists() && versionFile.exists()) {
         val prevVersion = (groovy.json.JsonSlurper().parse(versionFile) as Map<*, *>)["version"]

@@ -1,7 +1,12 @@
 name: Build / Check PR
 on:
   pull_request:
-    types: [assigned, opened, synchronize, reopened]
+    types: [synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   run:
     runs-on: ubuntu-latest
