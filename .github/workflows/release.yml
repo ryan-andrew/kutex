@@ -39,6 +39,9 @@ jobs:
       - name: Grab secring
         run: |
           echo -n "${{ secrets.SECRING_GPG_B64 }}" | base64 --decode > ./secring.gpg
+      - name: Log test
+        run: |
+          ./gradlew printProps
       - name: Publish
         env:
           USERNAME: 'ryan-andrew'
