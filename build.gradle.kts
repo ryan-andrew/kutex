@@ -92,16 +92,6 @@ tasks.register("printVersion"){
     println(version)
 }
 
-tasks.register("printProps") {
-    val gradFile = projectDir.resolve("gradle.properties").readLines().joinToString("\n")
-    println("!!!!!!!!!!!!!")
-    println(gradFile)
-    println(gradFile[gradFile.lastIndex-3])
-    println("-------------")
-    projectDir.resolve("gradle.properties").readLines().forEach { it.forEach { println(it) } }
-    println("_____________")
-}
-
 tasks.register("copyFromDocsToTmp"){
     val versionFile = dokkaDir.resolve("version.json")
     if (dokkaDir.exists() && versionFile.exists()) {
@@ -153,8 +143,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/ryan-andrew/kutex")
             credentials {
-                username = "ryan-andrew"
-                password = System.getenv("PUSH_TOKEN")
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
             }
         }
         maven {
