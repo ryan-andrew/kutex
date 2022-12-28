@@ -36,12 +36,10 @@ jobs:
           echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" >> ./gradle.properties
           echo "ossrhUsername=${{ secrets.SONATYPE_USERNAME }}" >> ./gradle.properties
           echo "ossrhPassword=${{ secrets.SONATYPE_PASSWORD }}" >> ./gradle.properties
+          echo "ossrhPassword=${{ secrets.SONATYPE_PASSWORD }}" >> ./gradle.properties
       - name: Grab secring
         run: |
           echo -n "${{ secrets.SECRING_GPG_B64 }}" | base64 --decode > ./secring.gpg
-      - name: Log test
-        run: |
-          ./gradlew printProps
       - name: Publish
         env:
           USERNAME: 'ryan-andrew'
