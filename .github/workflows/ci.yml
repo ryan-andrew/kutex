@@ -1,5 +1,7 @@
-name: CI
-on: [push, pull_request]
+name: Build / Check PR
+on:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
 jobs:
   run:
     runs-on: ubuntu-latest

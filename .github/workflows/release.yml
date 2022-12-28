@@ -1,0 +1,65 @@
+name: Release
+on:
+  push:
+    branches:
+      - 'main'
+    tags:
+      - 'v**'
+
+concurrency:
+  group: "release"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      # Setup
+      - name: Setup Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PUSHER_TOKEN }}
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      # Build / Check / Coverage
+      - name: Build / Check / Code coverage
+        run: ./gradlew build check
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+
+      # Publish
+      - name: Fill gradle.properties
+        run: |
+          echo "signing.keyId=${{ secrets.SIGNING_KEY_ID }}" > ./gradle.properties
+          echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" > ./gradle.properties
+          echo "ossrhUsername=${{ secrets.SONATYPE_PASSWORD }}" > ./gradle.properties
+          echo "ossrhPassword=${{ secrets.SONATYPE_USERNAME }}" > ./gradle.properties
+      - name: Grab secring
+        run: |
+          echo -n "${{ secrets.SECRING_GPG_B64 }}" | base64 --decode > ./secring.gpg
+      - name: Publish
+        env:
+          USERNAME: 'ryan-andrew'
+          TOKEN: ${{ secrets.PUSH_TOKEN }}
+        run: ./gradlew publish
+
+      # Docs
+      - name: Checkout Docs
+        run: |
+          git fetch
+          git checkout origin/docs
+          ./gradlew copyFromDocsToTmp
+          git checkout release-test/1
+          ./gradlew dokkaHtml
+      - name: Commit Docs
+        run: |
+          git add ./build/dokka/html -f
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -m "Update documentation for $(./gradlew -q printVersion)"
+          git push origin release-test/1:docs -f
