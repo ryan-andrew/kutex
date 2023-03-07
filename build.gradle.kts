@@ -77,12 +77,12 @@ kover {
 
 buildscript {
     dependencies {
-        classpath("org.jetbrains.dokka:versioning-plugin:1.7.20")
+        classpath("org.jetbrains.dokka:versioning-plugin:1.8.10")
     }
 }
 
 dependencies {
-    dokkaPlugin("org.jetbrains.dokka:versioning-plugin:1.7.20")
+    dokkaPlugin("org.jetbrains.dokka:versioning-plugin:1.8.10")
 }
 
 val dokkaDir = buildDir.resolve("dokka").resolve("html")
